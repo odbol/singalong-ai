@@ -1,5 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+ 
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -36,7 +38,12 @@ module.exports = {
 			swDest: 'sw.js',
 			clientsClaim: true,
 			skipWaiting: false
-		})
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+          { from: 'public' }
+      ]
+    })
 	],
 
 	module: {
