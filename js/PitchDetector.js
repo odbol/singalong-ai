@@ -1,26 +1,29 @@
 export default class PitchDetector {
 
+    pitch;
+
     constructor() {
 
     }
-
-    start() {
-        // const audioContext = new AudioContext();
-        // // const MicStream = MicStream
-        // const pitch = ml5.pitchDetection(
-        //     './model/',
-        //     audioContext,
-        //     MicStream,
-        //     modelLoaded,
-        // );
-
-        // // When the model is loaded
-        // function modelLoaded() {
-        //     console.log('Model Loaded!');
-        // }
-
-        // pitch.getPitch((err, frequency) => {
-        //     console.log(frequency);
-        // });
+    
+    async start() {
+      const audioContext = new AudioContext();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      this.startPitch(stream, audioContext);
+    }
+    
+    startPitch(stream, audioContext) {
+      this.pitch = ml5.pitchDetection('./ml/pitchDetection', audioContext , stream, () => this.getPitch());
+    }
+    
+    getPitch() {
+      this.pitch.getPitch(function(err, frequency) {
+        if (frequency) {
+          console.log('pitch: ' + frequency);
+        } else {
+          console.log('No pitch detected');
+        }
+        getPitch();
+      })
     }
 }
