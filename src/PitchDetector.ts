@@ -1,8 +1,20 @@
+import {Subject} from 'rxjs';
+import { distinctUntilChanged, filter, throttleTime } from 'rxjs/operators';
+
+import {Frequency} from 'tone';
+
+import {debugPrint} from './Debug';
+
 declare var ml5: any;
 
 export default class PitchDetector {
 
     pitch;
+    
+    private noteSubject = new Subject();
+
+    onNote = this.noteSubject
+                .pipe(distinctUntilChanged(), filter(f => f > 0), throttleTime(300))
 
     constructor() {
 
@@ -21,9 +33,15 @@ export default class PitchDetector {
     getPitch() {
       this.pitch.getPitch((err, frequency) => {
         if (frequency) {
-          console.log('pitch: ' + frequency);
+          const midi = Frequency(frequency).toMidi();
+
+          debugPrint('pitch: ' + frequency, midi);
+          
+          this.noteSubject.next(midi);
         } else {
-          console.log('No pitch detected');
+          debugPrint('No pitch detected');
+
+          //this.noteSubject.next(0);
         }
         this.getPitch();
       })

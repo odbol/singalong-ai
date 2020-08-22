@@ -1,10 +1,11 @@
 
 const DEBUG = ~window.location.href.indexOf('debug');
+const DISABLE_VIDEO = ~window.location.href.indexOf('novideo');
 
-function debugPrint() {
+function debugPrint(...args: any[]) {
     if (DEBUG) {
-        console.log.apply(console, arguments);
+        console.log(...args);
     }
 }
 
-export {DEBUG, debugPrint};
+export {DEBUG, DISABLE_VIDEO, debugPrint};

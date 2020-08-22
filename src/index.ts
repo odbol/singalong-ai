@@ -18,7 +18,7 @@
 
 import PitchDetector from './PitchDetector';
 import FaceDetector from './FaceDetector';
-
+import {DISABLE_VIDEO} from './Debug';
 
 
 
@@ -43,9 +43,14 @@ const faceDetector = new FaceDetector(document.getElementById('output'));
 
 
 
-// call app.map.init() once the DOM is loaded
 window.addEventListener('DOMContentLoaded', function() {
-  faceDetector.start();
+  if (!DISABLE_VIDEO) {
+    faceDetector.start();
+  }
+
+  pitchDetector.onNote.subscribe((midiNote: number) => {
+    console.log('NOTE: ' + midiNote);
+  });
 });
 
 
