@@ -1,4 +1,5 @@
- 
+declare var ml5: any;
+
 // by default all options are set to true
 const detection_options = {
     withLandmarks: true,

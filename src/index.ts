@@ -16,8 +16,8 @@
  */
 
 
-import PitchDetector from './js/PitchDetector';
-import FaceDetector from './js/FaceDetector';
+import PitchDetector from './PitchDetector';
+import FaceDetector from './FaceDetector';
 
 
 

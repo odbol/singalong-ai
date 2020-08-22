@@ -1,3 +1,5 @@
+declare var ml5: any;
+
 export default class PitchDetector {
 
     pitch;
@@ -17,13 +19,13 @@ export default class PitchDetector {
     }
     
     getPitch() {
-      this.pitch.getPitch(function(err, frequency) {
+      this.pitch.getPitch((err, frequency) => {
         if (frequency) {
           console.log('pitch: ' + frequency);
         } else {
           console.log('No pitch detected');
         }
-        getPitch();
+        this.getPitch();
       })
     }
 }
