@@ -24,6 +24,8 @@ import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 
 import {TRIANGULATION} from './triangulation';
 
+import PitchDetector from './js/PitchDetector';
+
 tfjsWasm.setWasmPath(
     `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/tfjs-backend-wasm.wasm`);
 
@@ -207,3 +209,17 @@ async function main() {
 };
 
 main();
+
+
+
+
+
+
+
+
+
+const pitchDetector = new PitchDetector();
+
+document.querySelector('body').onclick = () => {
+  pitchDetector.start();
+};
