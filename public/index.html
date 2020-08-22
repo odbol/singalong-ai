@@ -21,6 +21,13 @@ limitations under the License.
 
 
 <style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #100e0e;
+    color: #f3f3f3;
+  }
+
   .canvas-wrapper, #scatter-gl-container {
     display: inline-block;
     vertical-align: top;
@@ -36,6 +43,12 @@ limitations under the License.
     transform: translate3d(-50%, -50%, 0);
     left: 50%;
     top: 50%;
+    position: absolute;
+  }
+
+  #output {
+    width: 100vw;
+    height: 100vh;
     position: absolute;
   }
 </style>

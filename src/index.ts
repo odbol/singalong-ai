@@ -35,7 +35,7 @@ import FaceDetector from './FaceDetector';
 
 
 const pitchDetector = new PitchDetector();
-const faceDetector = new FaceDetector();
+const faceDetector = new FaceDetector(document.getElementById('output'));
 
 
 

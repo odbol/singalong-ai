@@ -13,17 +13,18 @@ export default class FaceDetector {
     detections;
     width = 360;
     height = 280;
-    canvas;
     ctx;
 
+    constructor(private canvas: HTMLCanvasElement) {
+        this.width = canvas.width;
+        this.height = canvas.height;
+    }
  
 
     async start(){
         
         // get the video
         this.video = await this.getVideo();
-
-        this.canvas = this.createCanvas(this.width, this.height);
         this.ctx = this.canvas.getContext('2d');
 
         this.faceapi = ml5.faceApi(this.video, detection_options, () => {
