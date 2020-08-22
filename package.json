@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@magenta/music": "^1.19.0",
+    "ml5": "^0.5.0",
     "rxjs": "^6.6.2",
     "tone": "^14.7.39"
   },

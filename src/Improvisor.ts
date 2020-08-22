@@ -49,7 +49,7 @@ export default class Improvisor {
 
     async start() {
         await this.instruments.start();
-        //await this.rnn.initialize();
+        await this.rnn.initialize();
     }
 
     onNote(midiNote: number) {

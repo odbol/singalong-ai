@@ -1,6 +1,6 @@
 import {DEBUG} from './Debug';
 
-declare var ml5: any;
+import * as ml5 from 'ml5';
 
 // by default all options are set to true
 const detection_options = {

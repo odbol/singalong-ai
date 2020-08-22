@@ -5,7 +5,7 @@ import {Frequency} from 'tone';
 
 import {debugPrint} from './Debug';
 
-declare var ml5: any;
+import * as ml5 from 'ml5';
 
 export default class PitchDetector {
 
