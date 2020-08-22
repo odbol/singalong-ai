@@ -1,3 +1,5 @@
+import {DEBUG} from './Debug';
+
 declare var ml5: any;
 
 // by default all options are set to true
@@ -55,9 +57,11 @@ export default class FaceDetector {
         this.ctx.drawImage(this.video, 0,0, this.width, this.height);
 
         if (this.detections) {
-            if(this.detections.length > 0){
-                this.drawBox(this.detections)
-                this.drawLandmarks(this.detections)
+            if(this.detections.length > 0) {
+                if (DEBUG) {
+                    this.drawBox(this.detections)
+                    this.drawLandmarks(this.detections)
+                }
             }
         }
         this.detect();
