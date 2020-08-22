@@ -5,22 +5,22 @@ export default class PitchDetector {
     }
 
     start() {
-        const audioContext = new AudioContext();
-        // const MicStream = MicStream
-        const pitch = ml5.pitchDetection(
-            './model/',
-            audioContext,
-            MicStream,
-            modelLoaded,
-        );
+        // const audioContext = new AudioContext();
+        // // const MicStream = MicStream
+        // const pitch = ml5.pitchDetection(
+        //     './model/',
+        //     audioContext,
+        //     MicStream,
+        //     modelLoaded,
+        // );
 
-        // When the model is loaded
-        function modelLoaded() {
-            console.log('Model Loaded!');
-        }
+        // // When the model is loaded
+        // function modelLoaded() {
+        //     console.log('Model Loaded!');
+        // }
 
-        pitch.getPitch((err, frequency) => {
-            console.log(frequency);
-        });
+        // pitch.getPitch((err, frequency) => {
+        //     console.log(frequency);
+        // });
     }
 }

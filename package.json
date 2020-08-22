@@ -26,7 +26,8 @@
     "crypto": false
   },
   "devDependencies": {
-    "@babel/core": "7.7.5",
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.6",
     "babel-plugin-external-helpers": "^6.22.0",
