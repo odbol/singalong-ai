@@ -1,4 +1,5 @@
 import {debugPrint} from './Debug';
+import {Note} from './magenta-proxy/Note';
 
 /**
  * This file loads magenta in an iframe and communicates with it.
@@ -62,7 +63,7 @@ import {debugPrint} from './Debug';
         return new Promise(resolve => this.requests[requestId] = resolve)
     }
 
-    async continueSequence(notes: any) {
+    async continueSequence(notes: Note[]) {
         return this.sendMessage({
             notes
         });
