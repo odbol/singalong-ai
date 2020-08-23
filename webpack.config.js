@@ -30,7 +30,10 @@ const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
-	entry: './src/index.ts',
+	entry: {
+    main: './src/index.ts',
+    magenta: './src/magenta-proxy/magenta.ts',
+  },
 
 	plugins: [
 		new webpack.ProgressPlugin(),
