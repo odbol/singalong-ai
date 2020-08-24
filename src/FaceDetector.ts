@@ -1,4 +1,4 @@
-import {DEBUG} from './Debug';
+import {DISABLE_FACE_DETECTION} from './Debug';
 
 import * as ml5 from 'ml5';
 
@@ -24,10 +24,12 @@ export default class FaceDetector {
         this.video = await this.getVideo();
         //this.ctx = this.canvas.getContext('2d');
 
-        this.faceapi = ml5.faceApi(this.video, detection_options, () => {
-            console.log('ready!')
-            this.detect();
-        })
+        if (!DISABLE_FACE_DETECTION) {
+            this.faceapi = ml5.faceApi(this.video, detection_options, () => {
+                console.log('ready!')
+                this.detect();
+            });
+        }
 
     }
 
