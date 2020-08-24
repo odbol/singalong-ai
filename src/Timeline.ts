@@ -1,3 +1,4 @@
+import {debugPrint} from './Debug';
 import {Transport} from 'tone';
 
 import * as THREE from 'three';
@@ -51,11 +52,16 @@ export class Timeline {
         object.rotation.y = Math.random() * 2 * Math.PI;
         object.rotation.z = Math.random() * 2 * Math.PI;
 
-        object.scale.x = (note.pitch / 80) + 0.5;
-        object.scale.y = (note.pitch / 80) + 0.5;
-        object.scale.z = (note.pitch / 80) + 0.5;
+        const MIN_MIDI_NOTE = 40;
+        const MAX_MIDI_NOTE = 90;
+        const pitchNormalized = (1 - (Math.max(0, note.pitch - MIN_MIDI_NOTE) / (MAX_MIDI_NOTE - MIN_MIDI_NOTE)))
+        const size = pitchNormalized * 3;
+        object.scale.x = size + 0.2;
+        object.scale.y = size + 0.2;
+        object.scale.z = size + 0.2;
                     
-        this.renderer.scene.add(object);
+        debugPrint('addToScene ' + pitchNormalized);
+        this.renderer.addPhysicalObject(object, pitchNormalized);
 
         object._note = note;
         this.noteMeshes.push(object);

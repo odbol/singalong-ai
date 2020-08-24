@@ -1,9 +1,13 @@
 import {DEBUG} from './Debug';
 
 import * as THREE from 'three';
+import * as CANNON from 'cannon';
 import Stats from 'stats-js';
 
 declare var __THREE_DEVTOOLS__: any;
+
+const timeStep=1/30;
+const INITIAL_VELOCITY = 100;
 
 export default class Renderer {
 
@@ -14,6 +18,9 @@ export default class Renderer {
     height = 280;
 
     stats;
+
+    world;
+    bodies = [];
 
     constructor(private canvas: HTMLCanvasElement, private video: HTMLVideoElement) {
         this.width = window.innerWidth;
@@ -75,7 +82,55 @@ export default class Renderer {
             document.body.appendChild( this.stats.dom );
         }
 
+        this.setupPhysics();
+
         this.animate();
+    }
+
+    setupPhysics() {
+        // Setup our world
+        this.world = new CANNON.World();
+        this.world.gravity.set(0, -10, 0); // m/s²
+        this.world.broadphase = new CANNON.NaiveBroadphase();
+
+        // Create a plane
+        var groundBody = new CANNON.Body({
+            mass: 0 // mass == 0 makes the body static
+        });
+        var groundShape = new CANNON.Plane();
+        groundBody.addShape(groundShape);
+        //this.world.addBody(groundBody);
+    }
+
+    updatePhysics() {
+
+        // Step the physics world
+        this.world.step(timeStep);
+
+        // Copy coordinates from Cannon.js to Three.js
+        for (let body of this.bodies) {
+            body.mesh.position.copy(body.position);
+            body.mesh.quaternion.copy(body.quaternion);
+        }
+    }
+
+    addPhysicalObject(mesh, pitchNormalized) { 
+        const shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
+        const body = new CANNON.Body({
+          mass: 4
+        });
+        body.position.set(mesh.position.x, mesh.position.y, mesh.position.z);
+        body.velocity.set(pitchNormalized * INITIAL_VELOCITY * 2 - INITIAL_VELOCITY , -INITIAL_VELOCITY, 20);
+        body.addShape(shape);
+        body.angularVelocity.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
+        body.angularDamping = 0.1;
+
+        body.mesh = mesh;
+        
+        this.bodies.push(body);
+
+        this.world.addBody(body);
+        this.scene.add(mesh);
     }
 
     onWindowResize() {
@@ -92,6 +147,9 @@ export default class Renderer {
     animate() {
 
         requestAnimationFrame( () => this.animate() );
+
+        this.updatePhysics();
+
         this.renderer.render( this.scene, this.camera );
 
         if (this.stats) {
