@@ -21,32 +21,26 @@ export default class Renderer {
         this.width = this.canvas.clientWidth;
         this.height = this.canvas.clientHeight;
         
-        this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 0.1, 100 );
-        this.camera.position.z = 0.01;
-
         this.scene = new THREE.Scene();
+        
+        // this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 0.1, 100 );
+        // this.camera.position.z = 0.01;
+        this.camera = new THREE.OrthographicCamera( this.width / - 2, this.width / 2, this.height / 2, this.height / - 2, -1, 1000 );
+
 
         var texture = new THREE.VideoTexture( this.video );
 
-        var geometry = new THREE.PlaneBufferGeometry( 16, 9 );
-        geometry.scale( 0.5, 0.5, 0.5 );
+        var geometry = new THREE.PlaneBufferGeometry( this.width, this.height );
+        geometry.scale( 1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( { map: texture } );
 
-        var count = 128;
-        var radius = 32;
+     
+        var mesh = new THREE.Mesh( geometry, material );
+        //mesh.position.setFromSphericalCoords( radius, phi, theta );
+        mesh.lookAt( this.camera.position );
+        this.scene.add( mesh );
 
-        for ( var i = 1, l = count; i <= l; i ++ ) {
-
-            var phi = Math.acos( - 1 + ( 2 * i ) / l );
-            var theta = Math.sqrt( l * Math.PI ) * phi;
-
-            var mesh = new THREE.Mesh( geometry, material );
-            mesh.position.setFromSphericalCoords( radius, phi, theta );
-            mesh.lookAt( this.camera.position );
-            this.scene.add( mesh );
-
-        }
-
+        
         this.renderer = new THREE.WebGLRenderer( { 
             canvas: this.canvas, 
             antialias: true 
