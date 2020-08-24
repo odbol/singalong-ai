@@ -20,6 +20,7 @@ import PitchDetector from './PitchDetector';
 import FaceDetector from './FaceDetector';
 import Improvisor from './Improvisor';
 import Renderer from './Renderer';
+import {Timeline} from './Timeline';
 import {DISABLE_VIDEO} from './Debug';
 
 
@@ -41,9 +42,11 @@ const video: HTMLVideoElement = document.getElementById('video');
 const pitchDetector = new PitchDetector();
 const faceDetector = new FaceDetector(canvas, video);
 
+const renderer = new Renderer(canvas, video);
+
+const timeline = new Timeline(renderer);
 const improvisor = new Improvisor();
 
-const renderer = new Renderer(canvas, video);
 
 
 
@@ -61,9 +64,11 @@ window.addEventListener('DOMContentLoaded', async function() {
   pitchDetector.onNote.subscribe((midiNote: number) => {
     console.log('NOTE: ' + midiNote);
 
-    //faceDetector.onNote(midiNote);
+    const note = timeline.addAndQuantizeNote(midiNote);
+
+    //faceDetector.onNote(note);
     
-    improvisor.onNote(midiNote);
+    improvisor.onNote(note);
   });
 });
 

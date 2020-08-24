@@ -4,19 +4,7 @@ import {Note} from './magenta-proxy/Note';
 
 import MagentaProxy from './MagentaProxy';
 import Instruments from './Instruments';
-
-
-// You must change both of these at the same time.
-const STEP_AS_SUBDIVISION = '8n';
-const STEPS_PER_BEAT = 2; // Assuming 1 beat = '4n' (quarter note)
-
-const MAX_STEPS = 16 / STEPS_PER_BEAT;
-
-function secondsToSteps(seconds) {
-    const beatsPerSecond = Transport.bpm.value / 60;
-    const numBeats = seconds / beatsPerSecond;
-    return Math.round(STEPS_PER_BEAT * numBeats);
-}
+import {MAX_STEPS} from './Timeline';
 
 export default class Improvisor {
 
@@ -33,17 +21,16 @@ export default class Improvisor {
         await this.magenta.initialize();
     }
 
-    async onNote(midiNote: number) {
-        const currentStep = secondsToSteps(Transport.nextSubdivision(STEP_AS_SUBDIVISION));
-        const quantizedStartStep = this.notes.length > 0 ? currentStep - this.notes[0].quantizedStartStep : 0;
-        const quantizedEndStep = quantizedStartStep + STEPS_PER_BEAT;
+    async onNote(quantizedNote: Note) {
+        const quantizedStartStep = this.notes.length > 0 ? quantizedNote.quantizedStartStep - this.notes[0].quantizedStartStep : 0;
+
         this.notes.push({
-            pitch: midiNote,
-            quantizedStartStep,
-            quantizedEndStep
+            quantizedStartStep: quantizedStartStep,
+            quantizedEndStep: quantizedStartStep + (quantizedNote.quantizedEndStep - quantizedNote.quantizedStartStep),
+            ...quantizedNote
         });
 
-        if (this.notes.length > 2 && quantizedStartStep > MAX_STEPS) {
+        if (this.notes.length > 2 && quantizedNote.quantizedStartStep > MAX_STEPS) {
             const sequence = await this.magenta.continueSequence(this.notes);
             console.log("got sequence", sequence);
 
