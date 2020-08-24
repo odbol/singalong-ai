@@ -1,6 +1,7 @@
 import {DEBUG} from './Debug';
 
 import * as THREE from 'three';
+import Stats from 'stats-js';
 
 declare var __THREE_DEVTOOLS__: any;
 
@@ -11,6 +12,8 @@ export default class Renderer {
     scene;
     width = 360;
     height = 280;
+
+    stats;
 
     constructor(private canvas: HTMLCanvasElement, private video: HTMLVideoElement) {
         this.width = window.innerWidth;
@@ -67,6 +70,11 @@ export default class Renderer {
             __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', { detail: this.renderer }));
         }
 
+        if (DEBUG) {
+            this.stats = new Stats();
+            document.body.appendChild( this.stats.dom );
+        }
+
         this.animate();
     }
 
@@ -86,5 +94,8 @@ export default class Renderer {
         requestAnimationFrame( () => this.animate() );
         this.renderer.render( this.scene, this.camera );
 
+        if (this.stats) {
+            this.stats.update();
+        }
     }
 }
