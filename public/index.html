@@ -14,20 +14,11 @@ limitations under the License.
 ==============================================================================-->
 
 <head>
-  <!-- Load three.js -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.106.2/build/three.min.js"></script>
-<!-- 
-<script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script> -->
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: #100e0e;
-    color: #f3f3f3;
-  }
-
   .canvas-wrapper, #scatter-gl-container {
     display: inline-block;
     vertical-align: top;
@@ -52,8 +43,11 @@ limitations under the License.
     position: absolute;
   }
 </style>
+
+<link rel="stylesheet" href="css/main.css" />
+
 </head>
-<body>
+<body class="loading">
   <div id="main">
     <div class="container">
       <div class="canvas-wrapper">
@@ -69,6 +63,32 @@ limitations under the License.
       </div>
       <div id="scatter-gl-container"></div>
     </div>
+
+
+		<button id="muteButton" class="muteButton button">Mute volume</button>
+
+		<div id="intro" class="overlay">
+			<div class="dialog">
+				<h2>Singalong AI</h2>
+
+				<div class="crossfade">
+					<div class="welcome">
+						<p>Please unmute and use headphones, then sing a song.</p>
+					</div>
+					
+					<div class="info">
+						<p>music and code by <a href="http://odbol.com">odbol</a></p>
+						<p>3d models from Google Poly
+						   Thanks to THREE.js and Tone.js</p>
+					</div>
+				</div>
+
+				<button class="start" id="startButton">Loading...</button>
+			</div>
+
+			<button id="infoButton" class="infoButton button">About</button>
+		</div>
+
   </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>

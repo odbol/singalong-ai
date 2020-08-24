@@ -108,8 +108,20 @@ define("./sw.js",['./workbox-decc7022'], function (workbox) { 'use strict';
    */
 
   workbox.precacheAndRoute([{
+    "url": "css/baseline-help_outline-24px.svg",
+    "revision": "d53e8829dce0f62dc6083e2cf4de9e55"
+  }, {
+    "url": "css/baseline-volume_off-24px.svg",
+    "revision": "ecfc1ac5dc5fd84af6923c915b510ba7"
+  }, {
+    "url": "css/baseline-volume_up-24px.svg",
+    "revision": "8317193c3212a8bbad837ed00bba8bb5"
+  }, {
+    "url": "css/main.css",
+    "revision": "9ee3f35453dc4bc42f437cbe390250ed"
+  }, {
     "url": "index.html",
-    "revision": "23efdbf2b6f9eeaac60671caed923238"
+    "revision": "85ea30bca2cc55c467ca2b11fb9fc93e"
   }, {
     "url": "magenta.html",
     "revision": "0a225d58ab562021e52a25e87c0e276d"

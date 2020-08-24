@@ -21,9 +21,11 @@ import FaceDetector from './FaceDetector';
 import Improvisor from './Improvisor';
 import Renderer from './Renderer';
 import {Timeline} from './Timeline';
+import * as Ui from './Ui';
 import {DISABLE_VIDEO} from './Debug';
 
 
+import {Transport} from 'tone';
 
 
 
@@ -32,6 +34,8 @@ import {DISABLE_VIDEO} from './Debug';
 
 
 
+
+Ui.incrementLoadingItems();
 
 
 
@@ -70,19 +74,15 @@ window.addEventListener('DOMContentLoaded', async function() {
     
     improvisor.onNote(note);
   });
+
+  Ui.addOnStartedListener(async () => {
+    await improvisor.start();
+  
+    pitchDetector.start();
+    
+  });
+
+
+  Ui.decrementLoadingItems();
 });
 
-
-
-
-
-
-
-
-
-document.querySelector('body').onclick = async () => {
-  await improvisor.start();
-
-  pitchDetector.start();
-  
-};

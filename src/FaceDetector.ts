@@ -1,5 +1,7 @@
 import {DISABLE_FACE_DETECTION} from './Debug';
 
+import * as Ui from './Ui';
+
 import * as ml5 from 'ml5';
 
 // by default all options are set to true
@@ -20,17 +22,22 @@ export default class FaceDetector {
 
     async start(){
         
+        Ui.incrementLoadingItems();
+
         // get the video
         this.video = await this.getVideo();
         //this.ctx = this.canvas.getContext('2d');
 
         if (!DISABLE_FACE_DETECTION) {
+            Ui.incrementLoadingItems();
             this.faceapi = ml5.faceApi(this.video, detection_options, () => {
-                console.log('ready!')
+                console.log('FaceDetector ready!')
                 this.detect();
+                Ui.decrementLoadingItems();
             });
         }
 
+        Ui.decrementLoadingItems();
     }
 
 
