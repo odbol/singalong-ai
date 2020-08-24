@@ -44,7 +44,7 @@ const faceDetector = new FaceDetector(canvas, video);
 
 const renderer = new Renderer(canvas, video);
 
-const timeline = new Timeline(renderer);
+const timeline = new Timeline(renderer, faceDetector);
 const improvisor = new Improvisor();
 
 

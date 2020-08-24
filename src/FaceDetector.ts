@@ -4,7 +4,7 @@ import * as ml5 from 'ml5';
 
 // by default all options are set to true
 const detection_options = {
-    withLandmarks: true,
+    withLandmarks: false,
     withDescriptors: false,
 }
 
