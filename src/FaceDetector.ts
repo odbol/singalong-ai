@@ -11,15 +11,10 @@ const detection_options = {
 export default class FaceDetector {
 
     faceapi;
-    video;
     detections;
-    width = 360;
-    height = 280;
     ctx;
 
-    constructor(private canvas: HTMLCanvasElement) {
-        this.width = canvas.width;
-        this.height = canvas.height;
+    constructor(private canvas: HTMLCanvasElement, private video: HTMLVideoElement) {
     }
  
 
@@ -27,7 +22,7 @@ export default class FaceDetector {
         
         // get the video
         this.video = await this.getVideo();
-        this.ctx = this.canvas.getContext('2d');
+        //this.ctx = this.canvas.getContext('2d');
 
         this.faceapi = ml5.faceApi(this.video, detection_options, () => {
             console.log('ready!')
@@ -44,24 +39,27 @@ export default class FaceDetector {
     gotResults(err, result) {
         if (err) {
             console.log(err)
-            return
+
+            // Try again every once in a while instead of givng up forever.
+            setTimeout(() => this.detect(), 2000);
+            return;
         }
         
         // console.log(result)
         this.detections = result;
 
         // Clear part of the canvas
-        this.ctx.fillStyle = "#000000"
-        this.ctx.fillRect(0,0, this.width, this.height);
+        // this.ctx.fillStyle = "#000000"
+        // this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
 
-        this.ctx.drawImage(this.video, 0,0, this.width, this.height);
+        // this.ctx.drawImage(this.video, 0,0, this.canvas.width, this.canvas.height);
 
         if (this.detections) {
             if(this.detections.length > 0) {
-                if (DEBUG) {
-                    this.drawBox(this.detections)
-                    this.drawLandmarks(this.detections)
-                }
+                // if (DEBUG) {
+                //     this.drawBox(this.detections)
+                //     this.drawLandmarks(this.detections)
+                // }
             }
         }
         this.detect();
@@ -131,19 +129,23 @@ export default class FaceDetector {
 
     // Helper 
     async getVideo(){
-        // Grab elements, create settings, etc.
-        const videoElement = document.createElement('video');
-        videoElement.setAttribute("style", "display: none;"); 
-        videoElement.width = this.width;
-        videoElement.height = this.height;
-        document.body.appendChild(videoElement);
+        // // Grab elements, create settings, etc.
+        // const videoElement = document.createElement('video');
+        // videoElement.setAttribute("style", "display: none;"); 
+        // videoElement.width = this.canvas.width;
+        // videoElement.height = this.height;
+        // document.body.appendChild(videoElement);
 
         // Create a webcam capture
         const capture = await navigator.mediaDevices.getUserMedia({ video: true })
-        videoElement.srcObject = capture;
-        videoElement.play();
+        this.video.srcObject = capture;
+        this.video.play();
 
-        return videoElement
+
+        this.video.width = this.video.videoWidth || this.video.clientWidth;
+        this.video.height = this.video.videoHeight || this.video.clientHeight;
+
+        return this.video
     }
 
     createCanvas(w, h){

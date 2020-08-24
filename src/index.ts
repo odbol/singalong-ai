@@ -19,6 +19,7 @@
 import PitchDetector from './PitchDetector';
 import FaceDetector from './FaceDetector';
 import Improvisor from './Improvisor';
+import Renderer from './Renderer';
 import {DISABLE_VIDEO} from './Debug';
 
 
@@ -34,20 +35,27 @@ import {DISABLE_VIDEO} from './Debug';
 
 
 
+const canvas: HTMLCanvasElement = document.getElementById('output');
+const video: HTMLVideoElement = document.getElementById('video');
 
 const pitchDetector = new PitchDetector();
-const faceDetector = new FaceDetector(document.getElementById('output'));
+const faceDetector = new FaceDetector(canvas, video);
 
 const improvisor = new Improvisor();
 
+const renderer = new Renderer(canvas, video);
 
 
 
 
+window.addEventListener('DOMContentLoaded', async function() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
 
-window.addEventListener('DOMContentLoaded', function() {
   if (!DISABLE_VIDEO) {
     faceDetector.start();
+    
+    await renderer.start();
   }
 
   pitchDetector.onNote.subscribe((midiNote: number) => {
@@ -71,4 +79,5 @@ document.querySelector('body').onclick = async () => {
   await improvisor.start();
 
   pitchDetector.start();
+  
 };
